@@ -1,0 +1,29 @@
+.calenderContainer {
+  max-width: 100vw;
+  height: 100%;
+
+  :global(.fc) {
+    height: 100vh;
+  }
+
+  :global(.fc-daygrid-day) {
+    width: 52px;
+  }
+
+  :global(.fc-daygrid-day-number) {
+    position: relative;
+
+    left: 2px;
+    font-size: 1.2em;
+    color: #333;
+  }
+
+  :global(.fc-daygrid-week:last-child) {
+    display: block; // デフォルトで表示
+
+    // 6行の月のみ表示する
+    :global(&.fiveRows&) {
+      display: none;
+    }
+  }
+}
