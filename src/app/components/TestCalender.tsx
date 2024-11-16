@@ -8,6 +8,8 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+//日付をクリックした際にその日付をフォーマットとして表示する関数コンポーネント
+import { format } from "date-fns";
 
 // Headerで作成した「 headerToolBar 」という名前のコンポーネントを持ってくる
 // ここに書いただけやったらエラー出る、下もしっかり書こう
@@ -37,92 +39,61 @@ const HeaderContainer: React.FC = () => {
     }
   };
 
-  return (
-    <FullCalendar
-      ref={CalenderRef}
-      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      headerToolbar={{
-        left: "customYear",
-        center: "customMonth",
-        right: "customSearch customMenu",
-      }}
-      customButtons={{
-        customYear: {
-          text: "2024", // 初期の年を入れておく
-          click: () => changeYear(),
-        },
-        customMonth: {
-          text: "11月", // 初期の月を入れておく
-          click: () => changeMonth(),
-        },
-        customSearch: {
-          text: "🔍", // アイコンを入れておく
-          click: () => alert("Search clicked!"),
-        },
-        customMenu: {
-          text: "☰", // ハンバーガーメニュー
-          click: () => alert("Menu clicked!"),
-        },
-      }}
-      datesSet={(info) => {
-        const calendarApi = CalenderRef.current?.getApi();
-        const currentYear = info.view.currentStart.getFullYear();
-        const currentMonth = info.view.currentStart.toLocaleString("default", {
-          month: "long",
-        });
-
-        // 年と月をカスタムボタンに反映
-        const yearButton = calendarApi?.toolbarEl.querySelector(
-          ".fc-customYear-button"
-        );
-        const monthButton = calendarApi?.toolbarEl.querySelector(
-          ".fc-customMonth-button"
-        );
-        if (yearButton) yearButton.textContent = currentYear.toString();
-        if (monthButton) monthButton.textContent = currentMonth;
-      }}
-    />
-  );
-};
-
-export default HeaderContainer;
-//日付をクリックした際にその日付をフォーマットとして表示する関数コンポーネント
-
-import { format } from "date-fns";
-//React.FCでpropsを受け取れる
-const TestCalender: React.FC = () => {
-  const [isSixRows, setIsSixRows] = useState(false);
-
-  // カレンダーの行数を判定
-  const handleDatesSet = () => {
-    const weeks = document.querySelectorAll(".fc-daygrid-week");
-    setIsSixRows(weeks.length === 6); // 行数が6の場合は true に設定
-  };
-
   //argという引数を受け取る関数
-
   const handleDateClick = (arg: any) => {
     alert(`日付: ${format(new Date(arg.date), "yyyy-MM-dd")}`);
   };
 
   return (
-    <div
-      className={`${styles.calenderContainer} ${
-        isSixRows ? styles.sixRows : styles.fiveRows
-      }`}
-    >
+    <div className={styles.calenderContainer}>
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
+        ref={CalenderRef}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        editable={true} //イベントのドラッグ操作を許可
-        selectable={true} //日付選択を許可
-        dateClick={handleDateClick} //日付クリックのイベントハンドラ
+        headerToolbar={{
+          left: "customYear",
+          center: "customMonth",
+          right: "customSearch customMenu",
+        }}
+        customButtons={{
+          customYear: {
+            text: "2024", // 初期の年を入れておく
+            click: () => changeYear(),
+          },
+          customMonth: {
+            text: "11月", // 初期の月を入れておく
+            click: () => changeMonth(),
+          },
+          customSearch: {
+            text: "🔍", // アイコンを入れておく
+            click: () => alert("Search clicked!"),
+          },
+          customMenu: {
+            text: "☰", // ハンバーガーメニュー
+            click: () => alert("Menu clicked!"),
+          },
+        }}
+        datesSet={(info) => {
+          const calendarApi = CalenderRef.current?.getApi();
+          const currentYear = info.view.currentStart.getFullYear();
+          const currentMonth = info.view.currentStart.toLocaleString(
+            "default",
+            {
+              month: "long",
+            }
+          );
+
+          // 年と月をカスタムボタンに反映
+          const yearButton = calendarApi?.toolbarEl.querySelector(
+            ".fc-customYear-button"
+          );
+          const monthButton = calendarApi?.toolbarEl.querySelector(
+            ".fc-customMonth-button"
+          );
+          if (yearButton) yearButton.textContent = currentYear.toString();
+          if (monthButton) monthButton.textContent = currentMonth;
+        }}
         businessHours={true}
-        // showNonCurrentDates={false}
-        datesSet={handleDatesSet}
-        // height="660px"
-        // locale={ja}
         events={[
           { title: "予定１", date: "2024-11-01" },
           { title: "予定2", date: "2024-11-03" },
@@ -131,5 +102,7 @@ const TestCalender: React.FC = () => {
     </div>
   );
 };
+
+export default HeaderContainer;
 
 // export default TestCalender;

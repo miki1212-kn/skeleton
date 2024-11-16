@@ -1,0 +1,12 @@
+.calendarContainer {
+  max-width: 100%;
+  height: 100%;
+
+  :global(.fc-daygrid) {
+    height: calc(100vh - 80px); // カレンダー全体の高さを調整
+  }
+
+  // :global(.fc-daygrid-week) {
+  //   height: calc(100% / 5); // 各週の高さを5分割に調整
+  // }
+}
