@@ -94,6 +94,7 @@ const HeaderContainer: React.FC = () => {
           if (monthButton) monthButton.textContent = currentMonth;
         }}
         businessHours={true}
+        showNonCurrentDates={false}
         events={[
           { title: "予定１", date: "2024-11-01" },
           { title: "予定2", date: "2024-11-03" },
