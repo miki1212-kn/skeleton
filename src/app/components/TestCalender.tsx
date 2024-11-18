@@ -20,6 +20,17 @@ import styles from "./MainCalender.module.scss";
 const HeaderContainer: React.FC = () => {
   const CalenderRef = useRef<FullCalendar>(null);
 
+  // カレンダーの6行目を取得
+  const handleDatesSet = () => {
+    const lastRow = document.querySelector(".fc-daygrid-week:last-child");
+
+    console.log(lastRow);
+
+    // if (lastRow) {
+    //   lastRow.remove(); // 6行目を削除する
+    // }
+  };
+
   // 年変更用のモーダルを開く（例として `prompt` を使用）
   const changeYear = () => {
     const newYear = prompt("Enter a new year:");
@@ -92,6 +103,15 @@ const HeaderContainer: React.FC = () => {
           );
           if (yearButton) yearButton.textContent = currentYear.toString();
           if (monthButton) monthButton.textContent = currentMonth;
+
+          // **6行目を削除するロジック**
+          const weeks = document.querySelectorAll(".fc-daygrid-week");
+
+          console.log(weeks);
+          // if (weeks.length === 6) {
+          //   const lastRow = weeks[weeks.length - 1]; // 最後の行を取得
+          //   lastRow.remove(); // 6行目を削除
+          // }
         }}
         businessHours={true}
         showNonCurrentDates={false}
