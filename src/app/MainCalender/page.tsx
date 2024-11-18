@@ -3,7 +3,7 @@
 export default function MaincCalender() {
   return (
     <>
-      <h1>カレンダー</h1>
+      <h1>カレンダーページ</h1>
     </>
   );
 }
