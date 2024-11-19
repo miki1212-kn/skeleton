@@ -6,7 +6,7 @@
   height: 626px;
 
   .weekdays {
-    font-size: 0.5em;
+    font-size: 1em;
     font-weight: bold;
     padding: 12px 0;
     display: grid;
@@ -22,6 +22,7 @@
     grid-template-columns: repeat(7, 1fr);
 
     .date {
+      font-size: 1.2em;
       height: 125px;
       border: 0.35px #edeaf5 solid;
       box-shadow: 0 0 2px rgba(122, 119, 128, 0.25);
