@@ -4,11 +4,20 @@ import React, { useState, useEffect } from "react";
 import styles from "./MainCalender.module.scss";
 import { log } from "console";
 
+//db
+import { db } from "../firebase/firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
+
+//components
+import AddEventButton from "../components/AddEventButton";
+
 const MainCalender: React.FC = () => {
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [dates, setDates] = useState<Array<number | null>>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null); //選択した日付
+  const [showModal, setShowModal] = useState(false);
 
   //月毎に何日あるのか取得
   const getDaysInMonth = (year: number, month: number) => {
@@ -20,10 +29,7 @@ const MainCalender: React.FC = () => {
     const daysInMonth = getDaysInMonth(year, month, day);
     //月の初日が何曜日か
     const firstDayOfMonth = new Date(year, month, 1).getDay();
-    //取得した曜日を定数に格納
-    // const dayOfMonth = new Date(year, month, day).getDay();
 
-    // const dates: Array<{ date: number | null; weekEnd: boolean }> = [];
     const dates: Array<{
       date: number | null;
       weekEnd: boolean;
@@ -64,6 +70,11 @@ const MainCalender: React.FC = () => {
     );
     setDates(generatedDates);
   }, [currentYear, currentMonth]); // currentYear や currentMonth が変更されたときに再実行
+
+  // const handleDateClick = (date: number) => {
+  //   setSelectedDate(`${currentYear}-${currentMonth + 1}-${date}`);
+  //   setShowModal(true); // モーダルを表示
+  // };
 
   // const dates = generateDates(currentYear, currentMonth);
 
