@@ -20,6 +20,11 @@ const MainCalender: React.FC = () => {
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const dates: Array<number | null> = [];
 
+    //firstDayOfMonthで取得した、月の初日の曜日より前の部分を空白にする
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      dates.push(null);
+    }
+
     // 実際の日付を挿入
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push(i);
@@ -55,11 +60,18 @@ const MainCalender: React.FC = () => {
       </div>
 
       <div className={styles.dates}>
-        {dates.map((date, index) => (
-          <div key={index} className={styles.date}>
-            {date || ""}
-          </div>
-        ))}
+        {dates.map((date, index) => {
+          //空白を定数に定義
+          const displayDate = date || "";
+          //日付がある場合とない場合でクラス名をそれぞれ付与
+          //dateが空→dateOut 日付あり→dateIn
+          const dateClass = displayDate ? styles.dateIn : styles.dateOut;
+          return (
+            <div key={index} className={`${styles.date} ${dateClass}`}>
+              {displayDate}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
