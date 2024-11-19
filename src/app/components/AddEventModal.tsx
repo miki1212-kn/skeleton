@@ -20,28 +20,24 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
   const [memo, setMemo] = useState<string>(""); // メモ
   const [history, setHistory] = useState<string>(""); // 履歴
 
-  //予定をfirestoreに追加する関数
-  // const addEvent = async () => {
-  //   if (!selectedDate || !eventTtl || (!isAllday && !startDate) || endDate)
-  //     return;
-
-  //   try {
-  //     await addDoc(collection(db, "events"), {
-  //       title: eventTtl,
-  //       isAllday,
-  //       startDate,
-  //       endDate,
-  //       color: eventColor,
-  //       memo,
-  //       history,
-  //       date: selectedDate,
-  //     });
-  //     setShowModal(false); //モーダルをとじる
-  //     alert("予定が追加されました！");
-  //   } catch (e) {
-  //     console.error("error : 追加に失敗", e);
-  //   }
-  // };
+  // 予定をfirestoreに追加する関数
+  const addEvent = async () => {
+    try {
+      const eventRef = collection(db, "events"); // Firestore の 'events' コレクション
+      await addDoc(eventRef, {
+        title,
+        isAllday,
+        startDate,
+        endDate,
+        color,
+        history,
+        memo,
+      });
+      setShowModal(false); // モーダル閉じる
+    } catch (error) {
+      console.error("Error adding event: ", error);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!title) return; // タイトルが入力されていない場合は保存しない
