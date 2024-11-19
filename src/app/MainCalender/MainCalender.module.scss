@@ -18,9 +18,9 @@
     .sunday {
       color: $sunday_color;
     }
-    // .saturday{
-    //   color: ;
-    // }
+    .saturday {
+      color: $saturday_color;
+    }
   }
 
   .dates {
@@ -33,6 +33,10 @@
       border: 0.35px #edeaf5 solid;
       box-shadow: 0 0 2px rgba(122, 119, 128, 0.25);
     }
+    .weekEnd {
+      background-color: pink;
+    }
+
     .dateOut {
       background-color: #f6f6f9;
     }
