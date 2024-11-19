@@ -52,11 +52,15 @@ const MainCalender: React.FC = () => {
   return (
     <div className={styles.calenderContainer}>
       <div className={styles.weekdays}>
-        {["日", "月", "火", "水", "木", "金", "土"].map((day) => (
-          <div key={day} className={styles.weekday}>
-            {day}
-          </div>
-        ))}
+        {["日", "月", "火", "水", "木", "金", "土"].map((day) => {
+          const dayClass =
+            day === "日" ? styles.sunday : day === "土" ? styles.saturday : "";
+          return (
+            <div key={day} className={`${styles.weekday} ${dayClass}`}>
+              {day}
+            </div>
+          );
+        })}
       </div>
 
       <div className={styles.dates}>
@@ -68,7 +72,7 @@ const MainCalender: React.FC = () => {
           const dateClass = displayDate ? styles.dateIn : styles.dateOut;
           return (
             <div key={index} className={`${styles.date} ${dateClass}`}>
-              {displayDate}
+              {date}
             </div>
           );
         })}
