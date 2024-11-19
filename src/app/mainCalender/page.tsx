@@ -23,19 +23,33 @@ const MainCalender: React.FC = () => {
     //取得した曜日を定数に格納
     // const dayOfMonth = new Date(year, month, day).getDay();
 
-    const dates: Array<{ date: number | null; weekEnd: boolean }> = [];
+    // const dates: Array<{ date: number | null; weekEnd: boolean }> = [];
+    const dates: Array<{
+      date: number | null;
+      weekEnd: boolean;
+      isSaturday: boolean;
+      isSunday: boolean;
+    }> = [];
 
     //firstDayOfMonthで取得した、月の初日の曜日より前の部分を空白にする
     for (let i = 0; i < firstDayOfMonth; i++) {
-      dates.push({ date: null, weekEnd: false });
+      dates.push({
+        date: null,
+        weekEnd: false,
+        isSaturday: false,
+        isSunday: false,
+      });
     }
 
-    //実際の日付を挿入すると同時に、
+    //実際の日付を挿入すると同時に、土日の取得と土曜日曜それぞれの取得
     for (let i = 1; i <= daysInMonth; i++) {
       const dayOfWeek = new Date(year, month, i).getDay();
       const weekEnd = dayOfWeek === 0 || dayOfWeek === 6;
-      dates.push({ date: i, weekEnd });
-      console.log(weekEnd); //ちゃんととれてる！
+      const isSaturday = dayOfWeek === 6;
+      const isSunday = dayOfWeek === 0;
+      dates.push({ date: i, weekEnd, isSaturday, isSunday });
+      // console.log(weekEnd); //ちゃんととれてる！
+      console.log(i, "土曜日？", isSaturday);
     }
 
     return dates;
@@ -86,14 +100,16 @@ const MainCalender: React.FC = () => {
       <div className={styles.dates}>
         {dates.map((dateInfo, index) => {
           //dateinfoを分割して代入してる
-          const { date, weekEnd } = dateInfo;
+          const { date, weekEnd, isSaturday, isSunday } = dateInfo;
           //空白を定数に定義
           // const displayDate = date || "";
           //日付がある場合とない場合でクラス名をそれぞれ付与
           //dateが空→dateOut
           //dateInの場合→weekEndがtrueならクラス付与
           const dateClass = date
-            ? `${styles.dateIn} ${weekEnd ? styles.weekEnd : ""}`
+            ? `${styles.dateIn} ${isSaturday ? styles.saturday : ""} ${
+                isSunday ? styles.sunday : ""
+              }`
             : styles.dateOut;
           return (
             <div key={index} className={`${styles.date} ${dateClass}`}>
