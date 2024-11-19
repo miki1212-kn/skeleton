@@ -1,0 +1,19 @@
+@import "/styles/color.scss";
+
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.appName {
+  font-size: 3em;
+  color: #683eff;
+}
+.btn {
+  padding: 6px;
+  border-radius: 10px;
+  border: 0.5px solid #683eff;
+  color: #683eff;
+}
