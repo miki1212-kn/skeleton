@@ -5,7 +5,7 @@ import styles from "./MainCalender.module.scss";
 import { log } from "console";
 
 //db
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 //components
@@ -16,8 +16,10 @@ const MainCalender: React.FC = () => {
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [dates, setDates] = useState<Array<number | null>>([]);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null); //選択した日付
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState<boolean>(false);
+  // const btnClick = ()=>{
+  //   setShowModal(true);
+  // }
 
   //月毎に何日あるのか取得
   const getDaysInMonth = (year: number, month: number) => {
@@ -94,42 +96,49 @@ const MainCalender: React.FC = () => {
     "12月",
   ];
   return (
-    <div className={styles.calenderContainer}>
-      <div className={styles.weekdays}>
-        {["日", "月", "火", "水", "木", "金", "土"].map((day) => {
-          //日曜と土曜でクラス付与
-          const dayClass =
-            day === "日" ? styles.sunday : day === "土" ? styles.saturday : "";
-          return (
-            <div key={day} className={`${styles.weekday} ${dayClass}`}>
-              {day}
-            </div>
-          );
-        })}
-      </div>
+    <>
+      <div className={styles.calenderContainer}>
+        <div className={styles.weekdays}>
+          {["日", "月", "火", "水", "木", "金", "土"].map((day) => {
+            //日曜と土曜でクラス付与
+            const dayClass =
+              day === "日"
+                ? styles.sunday
+                : day === "土"
+                ? styles.saturday
+                : "";
+            return (
+              <div key={day} className={`${styles.weekday} ${dayClass}`}>
+                {day}
+              </div>
+            );
+          })}
+        </div>
 
-      <div className={styles.dates}>
-        {dates.map((dateInfo, index) => {
-          //dateinfoを分割して代入してる
-          const { date, weekEnd, isSaturday, isSunday } = dateInfo;
-          //空白を定数に定義
-          // const displayDate = date || "";
-          //日付がある場合とない場合でクラス名をそれぞれ付与
-          //dateが空→dateOut
-          //dateInの場合→weekEndがtrueならクラス付与
-          const dateClass = date
-            ? `${styles.dateIn} ${isSaturday ? styles.saturday : ""} ${
-                isSunday ? styles.sunday : ""
-              }`
-            : styles.dateOut;
-          return (
-            <div key={index} className={`${styles.date} ${dateClass}`}>
-              {date}
-            </div>
-          );
-        })}
+        <div className={styles.dates}>
+          {dates.map((dateInfo, index) => {
+            //dateinfoを分割して代入してる
+            const { date, weekEnd, isSaturday, isSunday } = dateInfo;
+            //空白を定数に定義
+            // const displayDate = date || "";
+            //日付がある場合とない場合でクラス名をそれぞれ付与
+            //dateが空→dateOut
+            //dateInの場合→weekEndがtrueならクラス付与
+            const dateClass = date
+              ? `${styles.dateIn} ${isSaturday ? styles.saturday : ""} ${
+                  isSunday ? styles.sunday : ""
+                }`
+              : styles.dateOut;
+            return (
+              <div key={index} className={`${styles.date} ${dateClass}`}>
+                {date}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+      <AddEventButton />
+    </>
   );
 };
 

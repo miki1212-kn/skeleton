@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./AddEventModal.module.scss";
 import { log } from "console";
 //db
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 interface AddEventModalProps {
