@@ -88,7 +88,7 @@ const MainCalender: React.FC = () => {
         {["日", "月", "火", "水", "木", "金", "土"].map((day) => {
           //日曜と土曜でクラス付与
           const dayClass =
-            day === "日" ? styles.sun : day === "土" ? styles.saturday : "";
+            day === "日" ? styles.sunday : day === "土" ? styles.saturday : "";
           return (
             <div key={day} className={`${styles.weekday} ${dayClass}`}>
               {day}
