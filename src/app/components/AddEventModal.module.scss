@@ -5,16 +5,29 @@
   position: fixed;
 
   height: 378px;
-  width: max-content;
+  width: 100vw;
   top: 50px;
+  left: 0;
 
   header {
     display: flex;
     background-color: $main;
-    justify-content: space-around;
+    justify-content: space-between;
     color: $base;
+    align-items: center;
+    padding: 14px 17px;
+    border-radius: 20px 20px 0% 0%;
+    position: relative;
     button {
-      background-color: $main;
+      all: unset;
+      font-size: 1.6em;
+      font-weight: bold;
+    }
+    .closeBtn {
+      font-size: 1.2em;
+    }
+    .storageBtn {
+      margin-left: 20px;
     }
   }
 }

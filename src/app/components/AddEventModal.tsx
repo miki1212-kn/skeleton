@@ -77,6 +77,7 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
           </button>
         </header>
         <input
+          className={styles.ttlWrap}
           type="text"
           placeholder="Event Title"
           value={eventTtl}
@@ -84,8 +85,8 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
         />
         {}
 
-        <label>
-          終日:
+        <label className={styles.isAlldayContainer}>
+          終日
           <input
             type="checkbox"
             checked={isAllday}
@@ -95,14 +96,16 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
 
         {/* 終日じゃない場合の日時入力 */}
         {!isAllday && (
-          <div>
+          <div className={styles.isNotAlldayWContainer}>
             <input
+              className={styles.startDateWrap}
               type="datetime-local"
               value={startDate || ""}
               onChange={(e) => setStartDate(e.target.value)}
             />
             ～
             <input
+              className={styles.endDateWrap}
               type="datetime-local"
               value={endDate || ""}
               onChange={(e) => setEndDate(e.target.value)}
