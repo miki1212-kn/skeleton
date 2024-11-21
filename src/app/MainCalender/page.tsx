@@ -12,9 +12,25 @@ import { collection, addDoc } from "firebase/firestore";
 import AddEventButton from "../components/AddEventButton";
 
 const MainCalender: React.FC = () => {
-  const today = new Date();
-  const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const getToday = () => {
+    const formatter = new Intl.DateTimeFormat("ja-JP", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+    const parts = formatter.formatToParts(new Date());
+    const today = {
+      year: Number(parts.find((part) => part.type === "year")?.value),
+      month: Number(parts.find((part) => part.type === "month")?.value),
+      date: Number(parts.find((part) => part.type === "day")?.value),
+    };
+    return today;
+  };
+
+  const today = getToday();
+  const [currentYear, setCurrentYear] = useState(today.year);
+  const [currentMonth, setCurrentMonth] = useState(today.month);
   const [dates, setDates] = useState<Array<number | null>>([]);
   // const [showModal, setShowModal] = useState<boolean>(false);
   // const btnClick = ()=>{
@@ -31,12 +47,19 @@ const MainCalender: React.FC = () => {
     const daysInMonth = getDaysInMonth(year, month, day);
     //月の初日が何曜日か
     const firstDayOfMonth = new Date(year, month, 1).getDay();
+    //今日の日にち（dateのみ）取得
+    const todayDate = today.date;
+    console.log(todayDate);
+    //yearの値が一致し、かつmonthも一致する
+    const isThisMonth = year === today.year && month === today.month;
+    console.log(isThisMonth);
 
     const dates: Array<{
       date: number | null;
       weekEnd: boolean;
       isSaturday: boolean;
       isSunday: boolean;
+      isToday: boolean;
     }> = [];
 
     //firstDayOfMonthで取得した、月の初日の曜日より前の部分を空白にする
@@ -46,18 +69,22 @@ const MainCalender: React.FC = () => {
         weekEnd: false,
         isSaturday: false,
         isSunday: false,
+        isToday: false,
       });
     }
 
     //実際の日付を挿入すると同時に、土日の取得と土曜日曜それぞれの取得
     for (let i = 1; i <= daysInMonth; i++) {
       const dayOfWeek = new Date(year, month, i).getDay();
+
       const weekEnd = dayOfWeek === 0 || dayOfWeek === 6;
       const isSaturday = dayOfWeek === 6;
       const isSunday = dayOfWeek === 0;
-      dates.push({ date: i, weekEnd, isSaturday, isSunday });
+      //今日の日(todayDate)とisThisMonthがtrue
+      const isToday = isThisMonth && i === todayDate;
+      dates.push({ date: i, weekEnd, isSaturday, isSunday, isToday });
       // console.log(weekEnd); //ちゃんととれてる！
-      console.log(i, "土曜日？", isSaturday);
+      // console.log(i, "土曜日？", isSaturday); //ちゃんととれてる！
     }
 
     return dates;
@@ -67,8 +94,8 @@ const MainCalender: React.FC = () => {
   useEffect(() => {
     const generatedDates = generateDates(
       currentYear,
-      currentMonth,
-      today.getDate()
+      currentMonth
+      // today.getDate()
     );
     setDates(generatedDates);
   }, [currentYear, currentMonth]); // currentYear や currentMonth が変更されたときに再実行
@@ -118,7 +145,7 @@ const MainCalender: React.FC = () => {
         <div className={styles.dates}>
           {dates.map((dateInfo, index) => {
             //dateinfoを分割して代入してる
-            const { date, weekEnd, isSaturday, isSunday } = dateInfo;
+            const { date, weekEnd, isSaturday, isSunday, isToday } = dateInfo;
             //空白を定数に定義
             // const displayDate = date || "";
             //日付がある場合とない場合でクラス名をそれぞれ付与
@@ -131,7 +158,16 @@ const MainCalender: React.FC = () => {
               : styles.dateOut;
             return (
               <div key={index} className={`${styles.date} ${dateClass}`}>
-                {date}
+                <div className={styles.dateTopContainer}>
+                  <div
+                    className={`${styles.dateNum} ${
+                      isToday ? styles.isToday : ""
+                    }`}
+                  >
+                    {date}
+                  </div>
+                </div>
+                <section className={styles.dateMainContainer}></section>
               </div>
             );
           })}

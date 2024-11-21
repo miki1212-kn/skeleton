@@ -28,11 +28,22 @@
     grid-template-columns: repeat(7, 1fr);
 
     .date {
-      font-size: 1.2em;
-      padding: 2px 2px;
       height: 125px;
       border: 0.35px #edeaf5 solid;
       box-shadow: 0 0 2px rgba(122, 119, 128, 0.25);
+      .dateTopContainer {
+        width: 100%;
+        height: 22px;
+        .dateNum {
+          padding: 2px 3px 2px 2px;
+          width: 22px;
+          height: 100%;
+          font-size: 1.2em;
+        }
+      }
+      .dateMainContainer {
+        padding: 0 2px 2px 2px;
+      }
     }
     .saturday {
       color: $saturday_color;
@@ -40,6 +51,10 @@
 
     .sunday {
       color: $sunday_color;
+    }
+    .isToday {
+      background-color: $accent;
+      color: $base;
     }
 
     .dateOut {
