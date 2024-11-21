@@ -71,17 +71,17 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
   const modalAnimation = {
     hidden: { y: "100%", opacity: 1 },
     visible: {
-      y: 0,
+      y: -650,
       opacity: 1,
 
       transition: {
         type: "tween",
         stiffness: 100,
-        damping: 10,
+        damping: 20,
         ease: easeInOut,
       },
     },
-    exit: { y: "100%", opacity: 1, scale: 0.9, transition: { duration: 0.2 } },
+    exit: { y: "100%", opacity: 1, scale: 0.9, transition: { duration: 0.4 } },
   };
 
   return (
