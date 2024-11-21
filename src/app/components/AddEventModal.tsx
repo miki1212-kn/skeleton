@@ -11,6 +11,9 @@ import { collection, addDoc } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
+//framer motion
+import { motion } from "framer-motion";
+
 interface AddEventModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -64,8 +67,26 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
     }
   };
 
+  //animation
+  const modalAnimation = {
+    hidden: { y: "100%", opacity: 1 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "tween", stiffness: 100, damping: 10 },
+    },
+    exit: { y: "100%", opacity: 0, transition: { duration: 0.2 } },
+  };
+
   return (
-    <div className={styles.modal}>
+    <motion.div
+      className={styles.modal}
+      variants={modalAnimation}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className={styles.modalContent}>
         <header>
           <button
@@ -153,7 +174,7 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
           />
         </main>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
