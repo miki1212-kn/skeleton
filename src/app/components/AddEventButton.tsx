@@ -52,24 +52,25 @@ import { AnimatePresence } from "framer-motion";
 
 const AddEventButton: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
 
   return (
-    <div className={styles.addBtnContainer}>
-      {/* showModalがfalseのときのみボタンを表示 */}
+    // <div className={styles.addBtnContainer}>
+    //   {/* showModalがfalseのときのみボタンを表示 */}
 
-      <AnimatePresence>
-        {!showModal && (
-          <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-            <FontAwesomeIcon className={styles.plus} icon={faPlus} />
-          </button>
-        )}
+    // </div>
+    <AnimatePresence>
+      {!showModal && (
+        <button className={styles.addBtn} onClick={() => setShowModal(true)}>
+          <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+        </button>
+      )}
 
-        {/* showModalがtrueの場合、モーダルを表示 */}
-        {showModal && (
-          <AddEventModal setShowModal={setShowModal} key="add-event-modal" />
-        )}
-      </AnimatePresence>
-    </div>
+      {/* showModalがtrueの場合、モーダルを表示 */}
+      {showModal && (
+        <AddEventModal setShowModal={setShowModal} key="add-event-modal" />
+      )}
+    </AnimatePresence>
   );
 };
 export default AddEventButton;

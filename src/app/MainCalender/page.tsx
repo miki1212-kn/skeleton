@@ -44,12 +44,14 @@ const MainCalender: React.FC = () => {
 
   //今月の日付を作成
   const generateDates = (year: number, month: number, day: number) => {
-    const daysInMonth = getDaysInMonth(year, month, day);
+    const daysInMonth = getDaysInMonth(year, month - 1);
     //月の初日が何曜日か
-    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const firstDayOfMonth = new Date(year, month - 1, 1).getDay();
+    console.log("今月は", firstDayOfMonth, "から始まる");
+
     //今日の日にち（dateのみ）取得
     const todayDate = today.date;
-    console.log(todayDate);
+    console.log("今日は", todayDate, "日です");
     //yearの値が一致し、かつmonthも一致する
     const isThisMonth = year === today.year && month === today.month;
     console.log(isThisMonth);
