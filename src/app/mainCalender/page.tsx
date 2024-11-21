@@ -140,6 +140,10 @@ const MainCalender: React.FC = () => {
       <AddEventButton />
     </>
   );
+<<<<<<< Updated upstream
 };
 
 export default MainCalender;
+=======
+}
+>>>>>>> Stashed changes
