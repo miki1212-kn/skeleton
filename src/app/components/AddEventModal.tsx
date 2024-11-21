@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 //framer motion
-import { motion } from "framer-motion";
+import { easeIn, easeInOut, motion } from "framer-motion";
 
 interface AddEventModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,7 +42,7 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
       });
       setShowModal(false); // モーダル閉じる
     } catch (error) {
-      console.error("Error adding event: ", error);
+      // console.error("Error adding event: ", error);
     }
   };
 
@@ -73,9 +73,15 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "tween", stiffness: 100, damping: 10 },
+
+      transition: {
+        type: "tween",
+        stiffness: 100,
+        damping: 10,
+        ease: easeInOut,
+      },
     },
-    exit: { y: "100%", opacity: 0, transition: { duration: 0.2 } },
+    exit: { y: "100%", opacity: 1, scale: 0.9, transition: { duration: 0.2 } },
   };
 
   return (
