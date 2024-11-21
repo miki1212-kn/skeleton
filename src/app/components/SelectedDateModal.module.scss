@@ -1,0 +1,68 @@
+@import "../styles/color.scss";
+
+.modal {
+  background-color: $base;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 90vh;
+  button,
+  input,
+  label,
+  select,
+  textarea {
+    all: unset;
+  }
+  button {
+    font-weight: bold !important;
+  }
+
+  // header {
+  //   display: flex;
+  //   background-color: $main;
+  //   justify-content: space-between;
+  //   color: $base;
+  //   align-items: center;
+  //   padding: 14px 17px;
+  //   border-radius: 20px 20px 0% 0%;
+  //   position: relative;
+  //   button {
+  //     font-size: 1.6em;
+  //   }
+  //   .closeBtn {
+  //     font-size: 1.2em;
+  //   }
+  //   .storageBtn {
+  //     margin-left: 20px;
+  //   }
+  // }
+
+  // main {
+  //   padding: 26px 19px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 36px;
+  //   .ttlContainer {
+  //     display: grid;
+  //     grid-template-columns: 1fr 16px 50px;
+  //     .ttlWrap {
+  //       font-size: 2em;
+  //     }
+  //     .regularBtn {
+  //       font-size: 1.4em;
+  //       color: $sub;
+  //       // background-color: ;
+  //       border: 0.5px solid $sub;
+  //       border-radius: 4px;
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+
+  //       // padding: 4px 12px;
+  //     }
+  //   }
+  //   .ttlWrap {
+  //     all: unset;
+  //   }
+  // }
+}

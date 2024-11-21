@@ -10,8 +10,10 @@ import { collection, addDoc } from "firebase/firestore";
 
 //components
 import AddEventButton from "../components/AddEventButton";
+import SelectedDateModal from "../components/SelectedDateModal";
 
 const MainCalender: React.FC = () => {
+  //timezoneを日本に設定
   const getToday = () => {
     const formatter = new Intl.DateTimeFormat("ja-JP", {
       timeZone: "Asia/Tokyo",
@@ -27,12 +29,14 @@ const MainCalender: React.FC = () => {
     };
     return today;
   };
-
+  //日本の今日
   const today = getToday();
   const [currentYear, setCurrentYear] = useState(today.year);
   const [currentMonth, setCurrentMonth] = useState(today.month);
   const [dates, setDates] = useState<Array<number | null>>([]);
-  // const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   // const btnClick = ()=>{
   //   setShowModal(true);
   // }
@@ -94,18 +98,17 @@ const MainCalender: React.FC = () => {
 
   // useEffectで管理
   useEffect(() => {
-    const generatedDates = generateDates(
-      currentYear,
-      currentMonth
-      // today.getDate()
-    );
+    const generatedDates = generateDates(currentYear, currentMonth);
     setDates(generatedDates);
   }, [currentYear, currentMonth]); // currentYear や currentMonth が変更されたときに再実行
 
-  // const handleDateClick = (date: number) => {
-  //   setSelectedDate(`${currentYear}-${currentMonth + 1}-${date}`);
-  //   setShowModal(true); // モーダルを表示
-  // };
+  const handleDateClick = (date: number) => {
+    setSelectedDate(`${currentYear}-${currentMonth}-${date}`);
+    //クリックした日
+    console.log(`${currentYear}-${currentMonth}-${date}`);
+
+    setShowModal(true); // モーダルを表示
+  };
 
   // const dates = generateDates(currentYear, currentMonth);
 
@@ -159,7 +162,11 @@ const MainCalender: React.FC = () => {
                 }`
               : styles.dateOut;
             return (
-              <div key={index} className={`${styles.date} ${dateClass}`}>
+              <div
+                key={index}
+                className={`${styles.date} ${dateClass}`}
+                onClick={() => date && handleDateClick(date)}
+              >
                 <div className={styles.dateTopContainer}>
                   <div
                     className={`${styles.dateNum} ${
@@ -175,6 +182,13 @@ const MainCalender: React.FC = () => {
           })}
         </div>
       </div>
+      {showModal && selectedDate && (
+        <SelectedDateModal
+          setShowModal={setShowModal}
+          selectedDate={selectedDate}
+        />
+      )}
+
       <AddEventButton />
     </>
   );
