@@ -1,1 +1,20 @@
 @import "../styles/color.scss";
+
+.modal {
+  background-color: $base;
+  position: fixed;
+
+  height: 378px;
+  width: max-content;
+  top: 50px;
+
+  header {
+    display: flex;
+    background-color: $main;
+    justify-content: space-around;
+    color: $base;
+    button {
+      background-color: $main;
+    }
+  }
+}

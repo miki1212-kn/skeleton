@@ -46,8 +46,8 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
       await addDoc(collection(db, "events"), {
         title,
         isAllday,
-        startDate: isAllDay ? null : startDate, // 終日設定の場合、startDateとendDateをnullにする
-        endDate: isAllDay ? null : endDate,
+        startDate: isAllday ? null : startDate, // 終日設定の場合、startDateとendDateをnullにする
+        endDate: isAllday ? null : endDate,
         color,
         memo,
         history,
@@ -64,10 +64,17 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
     <div className={styles.modal}>
       <div className={styles.modalContent}>
         <header>
-          <button onClick={addEvent}>保存</button>
+          <button
+            onClick={() => setShowModal(false)}
+            className={styles.closeBtn}
+          >
+            キャンセル
+          </button>
 
           <h2>新しい予定</h2>
-          <button onClick={() => setShowModal(false)}>キャンセル</button>
+          <button onClick={addEvent} className={styles.storageBtn}>
+            保存
+          </button>
         </header>
         <input
           type="text"
@@ -82,7 +89,7 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
           <input
             type="checkbox"
             checked={isAllday}
-            onChange={() => setInAllday(!isAllday)}
+            onChange={() => setIsAllday(!isAllday)}
           />
         </label>
 
