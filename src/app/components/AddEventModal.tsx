@@ -7,6 +7,10 @@ import { log } from "console";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
+//icon
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+
 interface AddEventModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -76,69 +80,78 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ setShowModal }) => {
             保存
           </button>
         </header>
-        <input
-          className={styles.ttlWrap}
-          type="text"
-          placeholder="Event Title"
-          value={eventTtl}
-          onChange={(e) => setEventTtl(e.target.value)}
-        />
-        {}
+        <main>
+          <section className={styles.ttlContainer}>
+            <input
+              className={styles.ttlWrap}
+              type="text"
+              placeholder="Event Title"
+              value={eventTtl}
+              onChange={(e) => setEventTtl(e.target.value)}
+            />
+            <button className={styles.ttlDeleteBtn}>
+              {" "}
+              <FontAwesomeIcon icon={faX} />
+            </button>
+            <button className={styles.regularBtn}>定型</button>
+          </section>
 
-        <label className={styles.isAlldayContainer}>
-          終日
+          <label className={styles.isAlldayContainer}>
+            <h3>終日</h3>
+
+            <input
+              type="checkbox"
+              checked={isAllday}
+              onChange={() => setIsAllday(!isAllday)}
+            />
+          </label>
+
+          {/* 終日じゃない場合の日時入力 */}
+          {!isAllday && (
+            <div className={styles.isNotAlldayWContainer}>
+              <input
+                className={styles.startDateWrap}
+                type="datetime-local"
+                value={startDate || ""}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              ～
+              <input
+                className={styles.endDateWrap}
+                type="datetime-local"
+                value={endDate || ""}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          )}
+
+          {/* 履歴 */}
           <input
-            type="checkbox"
-            checked={isAllday}
-            onChange={() => setIsAllday(!isAllday)}
+            type="text"
+            value={history}
+            onChange={(e) => setHistory(e.target.value)}
           />
-        </label>
 
-        {/* 終日じゃない場合の日時入力 */}
-        {!isAllday && (
-          <div className={styles.isNotAlldayWContainer}>
-            <input
-              className={styles.startDateWrap}
-              type="datetime-local"
-              value={startDate || ""}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            ～
-            <input
-              className={styles.endDateWrap}
-              type="datetime-local"
-              value={endDate || ""}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-        )}
+          {/* 予定のカラー */}
+          <select
+            value={eventColor}
+            onChange={(e) => setEventColor(e.target.value)}
+          >
+            <option value="red">赤</option>
+            <option value="blue">青</option>
+            <option value="green">緑</option>
+            <option value="yellow">黄</option>
+            <option value="purple">紫</option>
+            <option value="orange">オレンジ</option>
+          </select>
 
-        {/* 履歴 */}
-        <input
-          type="text"
-          value={history}
-          onChange={(e) => setHistory(e.target.value)}
-        />
-
-        {/* 予定のカラー */}
-        <select
-          value={eventColor}
-          onChange={(e) => setEventColor(e.target.value)}
-        >
-          <option value="red">赤</option>
-          <option value="blue">青</option>
-          <option value="green">緑</option>
-          <option value="yellow">黄</option>
-          <option value="purple">紫</option>
-          <option value="orange">オレンジ</option>
-        </select>
-
-        {/* メモ */}
-        <textarea
-          placeholder="メモ"
-          value={memo}
-          onChange={(e) => setMemo(e.target.value)}
-        />
+          {/* メモ */}
+          <textarea
+            placeholder="メモ"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
+        </main>
       </div>
     </div>
   );
