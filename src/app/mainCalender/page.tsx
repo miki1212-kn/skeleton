@@ -84,13 +84,15 @@ const MainCalender: React.FC = () => {
       const dayOfWeek = new Date(year, month, i).getDay();
 
       const weekEnd = dayOfWeek === 0 || dayOfWeek === 6;
-      const isSaturday = dayOfWeek === 6;
-      const isSunday = dayOfWeek === 0;
+      const isSaturday = dayOfWeek === 1;
+      // console.log(isSaturday);
+
+      const isSunday = dayOfWeek === 2;
       //今日の日(todayDate)とisThisMonthがtrue
       const isToday = isThisMonth && i === todayDate;
       dates.push({ date: i, weekEnd, isSaturday, isSunday, isToday });
       // console.log(weekEnd); //ちゃんととれてる！
-      // console.log(i, "土曜日？", isSaturday); //ちゃんととれてる！
+      console.log(i, "土曜日？", isSaturday); //ちゃんととれてる！
     }
 
     return dates;
