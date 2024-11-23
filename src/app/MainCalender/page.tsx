@@ -11,9 +11,10 @@ import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
 //components
 import AddEventButton from "../components/AddEventButton";
 import SelectedDateModal from "../components/SelectedDateModal";
+import { type } from "os";
 
 const MainCalender: React.FC = () => {
-  //timezoneを日本に設定
+  //timezoneを日本に設定し今日の日付を取得する関数
   const getToday = () => {
     const formatter = new Intl.DateTimeFormat("ja-JP", {
       timeZone: "Asia/Tokyo",
@@ -23,11 +24,13 @@ const MainCalender: React.FC = () => {
     });
     const parts = formatter.formatToParts(new Date());
     const today = {
+      //全部Number型でとってきてる
       year: Number(parts.find((part) => part.type === "year")?.value),
       month: Number(parts.find((part) => part.type === "month")?.value),
       date: Number(parts.find((part) => part.type === "day")?.value),
     };
-    console.log(today);
+    console.log("今日の日付は", today);
+
     return today;
   };
   //日本の今日
@@ -113,6 +116,8 @@ const MainCalender: React.FC = () => {
         ...doc.data(),
       }));
       console.log("取得した予定データ", fetchEvents);
+
+      setEvents(fetchEvents);
     } catch (error) {
       console.error("予定データ取得失敗", error);
     }
@@ -151,10 +156,12 @@ const MainCalender: React.FC = () => {
     // return events;
   };
 
+  //useEffect ----------------------------------------------
   // useEffectで管理
   useEffect(() => {
-    const generatedDates = generateDates(currentYear, currentMonth);
-    setDates(generatedDates);
+    setDates(generateDates(currentYear, currentMonth));
+    // const generatedDates = generateDates(currentYear, currentMonth);
+    // setDates(generatedDates);
     //   const events = await fetchEventsForMonth(currentYear, currentMonth);
     //   console.log("firestoreから取得した予定のデータ:", events);
     //   //カレンダーに日付データをマージ
@@ -178,11 +185,24 @@ const MainCalender: React.FC = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
-  // const fetchAndSetEvents = async () => {
+
+  //クリックした日付取得の関数
   const handleDateClick = (date: number) => {
-    setSelectedDate(`${currentYear}-${currentMonth}-${date}`);
+    // selectedDateを"YYYY-MM-DD"の形式に変更
+    const formattedDate = `${currentYear}-${String(currentMonth).padStart(
+      2,
+      "0"
+    )}-${String(date).padStart(2, "0")}`;
+    setSelectedDate(formattedDate);
     //クリックした日
-    console.log(`${currentYear}-${currentMonth}-${date}`);
+    console.log("クリックした日", formattedDate);
+
+    const [selectedYear, selectedMonth, selectedDay] = formattedDate
+      .split("-")
+      .map(Number);
+    console.log("selectedYear:", selectedYear);
+    console.log("selectedMonth:", selectedMonth);
+    console.log("selectedDay:", selectedDay);
 
     setShowModal(true); // モーダルを表示
   };
@@ -253,7 +273,24 @@ const MainCalender: React.FC = () => {
                     {date}
                   </div>
                 </div>
-                <section className={styles.dateMainContainer}></section>
+                <section className={styles.dateMainContainer}>
+                  {/* //日付から一致する予定の日付をフィルタリング */}
+                  {date &&
+                    events
+                      .filter((event) => {
+                        //フォーマットを"YYYY-MM-DD"に
+                        const formattedDate = `${currentYear}-${String(
+                          currentMonth
+                        ).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+
+                        return event.date === formattedDate;
+                      })
+                      .map((event) => (
+                        <div key={event.id} className={styles.eventContainer}>
+                          <p>{event.title}</p>
+                        </div>
+                      ))}
+                </section>
               </div>
             );
           })}
@@ -263,6 +300,7 @@ const MainCalender: React.FC = () => {
         <SelectedDateModal
           setShowModal={setShowModal}
           selectedDate={selectedDate}
+          events={events.filter((event) => event.date === selectedDate)}
         />
       )}
 

@@ -43,6 +43,13 @@
       }
       .dateMainContainer {
         padding: 0 2px 2px 2px;
+        .eventContainer {
+          font-weight: bold;
+          background: $sub;
+          border-radius: 2px;
+          color: $base;
+          padding-left: 2px;
+        }
       }
     }
     .saturday {

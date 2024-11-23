@@ -201,23 +201,74 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 //framer motion
 import { easeIn, easeInOut, motion } from "framer-motion";
+
 interface SelectedDateModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedDate: string;
+  events: Array<any>;
 }
 
 const SelectedDateModal: React.FC<SelectedDateModalProps> = ({
   setShowModal,
   selectedDate,
+  events,
 }) => {
+  //selectedDate(2024-11-05)を分割
+  const [selectedYear, selectedMonth, selectedDay] = selectedDate.split("-");
+
+  //animation設定
+  const modalAnimation = {
+    hidden: { y: "100%", opacity: 1 },
+    visible: {
+      y: -230,
+      opacity: 1,
+
+      transition: {
+        type: "tween",
+        stiffness: 100,
+        damping: 20,
+        ease: easeInOut,
+      },
+    },
+    exit: { y: "100%", opacity: 1, scale: 0.9, transition: { duration: 0.4 } },
+  };
+
+  // モーダル外をクリックしたときにモーダルを閉じる処理
+  const handleModalClick = (e: React.MouseEvent) => {
+    // モーダルのコンテンツ内をクリックした場合は閉じない
+    if (e.target === e.currentTarget) {
+      setShowModal(false);
+    }
+  };
+
   return (
-    <div className={styles.modal}>
+    <motion.div
+      className={styles.modal}
+      onClick={handleModalClick}
+      variants={modalAnimation}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className={styles.modalContent}>
-        <h2>今日の予定・あきリスト</h2>
-        <p>選択された日付: {selectedDate}</p>
-        <button onClick={() => setShowModal(false)}>閉じる</button>
+        <h2>
+          {selectedYear}年{selectedMonth}月{selectedDay}日
+        </h2>
+        {events.length > 0 ? (
+          events.map((event) => (
+            <div key={event.id} className={styles.eventDetail}>
+              <h3>{event.title}</h3>
+              <p>
+                {event.startTime} | {event.endTime}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>予定はありません</p>
+        )}
+        ;<button onClick={() => setShowModal(false)}>閉じる</button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
