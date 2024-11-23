@@ -6,7 +6,7 @@ import { log } from "console";
 
 //db
 import { db } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
 
 //components
 import AddEventButton from "../components/AddEventButton";
@@ -27,6 +27,7 @@ const MainCalender: React.FC = () => {
       month: Number(parts.find((part) => part.type === "month")?.value),
       date: Number(parts.find((part) => part.type === "day")?.value),
     };
+    console.log(today);
     return today;
   };
   //日本の今日
@@ -36,10 +37,7 @@ const MainCalender: React.FC = () => {
   const [dates, setDates] = useState<Array<number | null>>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
-
-  // const btnClick = ()=>{
-  //   setShowModal(true);
-  // }
+  const [events, setEvents] = useState<Array<any>>([]); // Firestoreのイベントデータを格納
 
   //月毎に何日あるのか取得
   const getDaysInMonth = (year: number, month: number) => {
@@ -58,7 +56,7 @@ const MainCalender: React.FC = () => {
     console.log("今日は", todayDate, "日です");
     //yearの値が一致し、かつmonthも一致する
     const isThisMonth = year === today.year && month === today.month;
-    console.log(isThisMonth);
+    // console.log(isThisMonth);
 
     const dates: Array<{
       date: number | null;
@@ -92,18 +90,95 @@ const MainCalender: React.FC = () => {
       const isToday = isThisMonth && i === todayDate;
       dates.push({ date: i, weekEnd, isSaturday, isSunday, isToday });
       // console.log(weekEnd); //ちゃんととれてる！
-      console.log(i, "土曜日？", isSaturday); //ちゃんととれてる！
+      // console.log(i, "土曜日？", isSaturday); //ちゃんととれてる！
     }
 
     return dates;
+  };
+
+  //firestoreから予定データ取得する関数
+  const fetchEvents = async () => {
+    // //開始日と終了日
+    // const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
+    // const endDate = `${year}-${String(month).padStart(2, "0")}-${new Date(
+    //   year,
+    //   month,
+    //   0
+    // ).getDate()}`;
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "events"));
+      const fetchEvents = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("取得した予定データ", fetchEvents);
+    } catch (error) {
+      console.error("予定データ取得失敗", error);
+    }
+    // //firestoreのクエリ
+    // const q = query(
+    //   collection(db, "events"),
+    //   where("date", ">=", startDate),
+    //   where("date", "<=", endDate)
+    // );
+
+    //データ取得
+    // const querySnapshot = await getDocs(q);
+    // const events: {
+    //   [key: string]: Array<{
+    //     id: string;
+    //     title: string;
+    //     startTime: string;
+    //     endTime: string;
+    //   }>;
+    // } = {};
+
+    // querySnapshot.forEach((doc) => {
+    //   const data = doc.data();
+    //   console.log(data);
+    //   const date = data.date; //"YYYY-MM-DD"
+    //   if (!events[date]) {
+    //     events[date] = [];
+    //   }
+    //   events[date].push({
+    //     id: doc.id,
+    //     title: data.title,
+    //     startTime: data.startTime,
+    //     endTime: data.endTime,
+    //   });
+    // });
+    // return events;
   };
 
   // useEffectで管理
   useEffect(() => {
     const generatedDates = generateDates(currentYear, currentMonth);
     setDates(generatedDates);
+    //   const events = await fetchEventsForMonth(currentYear, currentMonth);
+    //   console.log("firestoreから取得した予定のデータ:", events);
+    //   //カレンダーに日付データをマージ
+    //   const updateDates = generateDates.map((dateInfo) => {
+    //     if (dateInfo.date) {
+    //       const fullDate = `${currentYear}-${String(currentMonth).padStart(
+    //         2,
+    //         "0"
+    //       )}-${String(dateInfo.date).padStart(2, "0")}`;
+    //       return { ...dateInfo, events: events[fullDate] || [] };
+    //     }
+    //     return { ...dateInfo, events: [] };
+    //   });
+
+    //   setDates(updateDates);
+    // };
+    // fetchAndSetEvents();
   }, [currentYear, currentMonth]); // currentYear や currentMonth が変更されたときに再実行
 
+  //予定データ取得
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+  // const fetchAndSetEvents = async () => {
   const handleDateClick = (date: number) => {
     setSelectedDate(`${currentYear}-${currentMonth}-${date}`);
     //クリックした日
