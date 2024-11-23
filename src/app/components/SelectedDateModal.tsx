@@ -197,10 +197,9 @@ import { collection, addDoc } from "firebase/firestore";
 
 //icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
 
 //framer motion
-import { easeIn, easeInOut, motion } from "framer-motion";
+import { AnimatePresence, easeIn, easeInOut, motion } from "framer-motion";
 
 interface SelectedDateModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -220,7 +219,7 @@ const SelectedDateModal: React.FC<SelectedDateModalProps> = ({
   const modalAnimation = {
     hidden: { y: "100%", opacity: 1 },
     visible: {
-      y: -230,
+      y: -250,
       opacity: 1,
 
       transition: {
@@ -230,45 +229,69 @@ const SelectedDateModal: React.FC<SelectedDateModalProps> = ({
         ease: easeInOut,
       },
     },
-    exit: { y: "100%", opacity: 1, scale: 0.9, transition: { duration: 0.4 } },
+    exit: { y: "100%", opacity: 0, scale: 0.9, transition: { duration: 0.8 } },
   };
 
   // モーダル外をクリックしたときにモーダルを閉じる処理
-  const handleModalClick = (e: React.MouseEvent) => {
-    // モーダルのコンテンツ内をクリックした場合は閉じない
-    if (e.target === e.currentTarget) {
-      setShowModal(false);
-    }
+  // const handleModalClick = (e: React.MouseEvent) => {
+  //   // モーダルのコンテンツ内をクリックした場合は閉じない
+  //   if (e.target === e.currentTarget) {
+  //     setShowModal(false);
+  //   }
+  // };
+  // モーダルを閉じる処理
+  const closeModal = () => {
+    setShowModal(false); // モーダルを閉じる
   };
 
   return (
-    <motion.div
-      className={styles.modal}
-      onClick={handleModalClick}
-      variants={modalAnimation}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
-      <div className={styles.modalContent}>
-        <h2>
-          {selectedYear}年{selectedMonth}月{selectedDay}日
-        </h2>
-        {events.length > 0 ? (
-          events.map((event) => (
-            <div key={event.id} className={styles.eventDetail}>
-              <h3>{event.title}</h3>
-              <p>
-                {event.startTime} | {event.endTime}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>予定はありません</p>
-        )}
-        ;<button onClick={() => setShowModal(false)}>閉じる</button>
-      </div>
-    </motion.div>
+    <AnimatePresence>
+      {setShowModal && (
+        <motion.div
+          className={styles.modal}
+          onClick={(e) => e.stopPropagation()}
+          variants={modalAnimation}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          // onAnimationComplete={() => {
+          //   // exitアニメーションが完了した後にモーダルを非表示にする
+          //   if (!setShowModal) {
+          //     setShowModal(false); // モーダルを閉じる
+          //   }
+          // }}
+        >
+          <div className={styles.modalContent}>
+            <header>
+              <h2>
+                {selectedYear}年{selectedMonth}月{selectedDay}日
+              </h2>
+              <button className={styles.closeBtn} onClick={closeModal}>
+                閉じる
+              </button>
+            </header>
+            <main>
+              {events.length > 0 ? (
+                events.map((event) => (
+                  <div key={event.id} className={styles.eventLabel}>
+                    <span className={styles.colorLabel}></span>
+                    <div className={styles.timeContainer}>
+                      <p>{event.startTime}</p>
+                      <span className={styles.timeBorder}></span>
+                      <p>{event.endTime}</p>
+                    </div>
+                    <h3>{event.title}</h3>
+                  </div>
+                ))
+              ) : (
+                <p className={styles.notEvent}>予定はありません</p>
+              )}
+            </main>
+            <footer></footer>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

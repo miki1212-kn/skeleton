@@ -256,12 +256,20 @@ const MainCalender: React.FC = () => {
             const dateClass = date
               ? `${styles.dateIn} ${isSaturday ? styles.saturday : ""} ${
                   isSunday ? styles.sunday : ""
-                }`
+                } `
               : styles.dateOut;
             return (
               <div
                 key={index}
-                className={`${styles.date} ${dateClass}`}
+                className={`${styles.date} ${
+                  selectedDate ===
+                  `${currentYear}-${String(currentMonth).padStart(
+                    2,
+                    "0"
+                  )}-${String(date).padStart(2, "0")}`
+                    ? styles.selected
+                    : ""
+                } ${dateClass}`}
                 onClick={() => date && handleDateClick(date)}
               >
                 <div className={styles.dateTopContainer}>
