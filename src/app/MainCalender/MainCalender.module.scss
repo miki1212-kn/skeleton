@@ -46,17 +46,20 @@
       }
       .dateMainContainer {
         padding: 0 2px 2px 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
         .eventContainer {
           width: 49px;
           height: 14px;
-          font-weight: bold;
-          background: $sub;
-          border-radius: 2px;
-          color: $base;
           padding-left: 2px;
-          p {
-            overflow: hidden;
-          }
+          font-weight: bold;
+          background: $base;
+          border-radius: 2px;
+          border: 0.5px solid $sub;
+          color: $sub;
+
+          overflow: hidden;
         }
       }
       &.selected {
