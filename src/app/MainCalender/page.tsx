@@ -1,10 +1,8 @@
 "use client";
+import Header from "../components/header";
 
 export default function MaincCalender() {
   return (
-    <>
-      <h1>カレンダーページ</h1>
-    </>
+    <Header />
   );
 }
-
