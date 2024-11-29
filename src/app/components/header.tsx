@@ -1,8 +1,13 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight, faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+  faMagnifyingGlass,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./header.module.scss"; // モジュール化スタイルをインポート
 
 const Header = () => {
@@ -10,8 +15,18 @@ const Header = () => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
   const monthNames = [
-    "1", "2", "3", "4", "5", "6",
-    "7", "8", "9", "10", "11", "12"
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
   ];
 
   const changeYear = (offset: number) => setYear(year + offset);
@@ -30,7 +45,9 @@ const Header = () => {
   };
 
   return (
-    <header className={styles.header}> {/* クラス名をstylesオブジェクトを使って設定 */}
+    <header className={styles.header}>
+      {" "}
+      {/* クラス名をstylesオブジェクトを使って設定 */}
       {/* 年と月 */}
       <div className={styles.header__yearMonth}>
         <div className={styles.header__year}>
@@ -43,24 +60,33 @@ const Header = () => {
           </button>
         </div>
         <div className={styles.header__month}>
-          <button onClick={() => changeMonth(-1)} className={styles.header__btn}>
+          <button
+            onClick={() => changeMonth(-1)}
+            className={styles.header__btn}
+          >
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <span className={styles.header__text}>{monthNames[month - 1]}</span>
+          <span className={styles.header__text}>{monthNames[month - 1]}月</span>
           <button onClick={() => changeMonth(1)} className={styles.header__btn}>
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       </div>
-
       {/* 検索バーとハンバーガーメニュー */}
       <div className={styles.header__actions}>
         <div className={styles.header__search}>
-          <input type="text" placeholder="Search" className={styles.header__searchInput} />
-          <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.header__searchIcon} />
+          <input
+            type="text"
+            placeholder=""
+            className={styles.header__searchInput}
+          />
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className={styles.header__searchIcon}
+          />
         </div>
         <button className={styles.header__btn}>
-          <FontAwesomeIcon icon={faBars } />
+          <FontAwesomeIcon icon={faBars} />
         </button>
       </div>
     </header>
@@ -68,4 +94,3 @@ const Header = () => {
 };
 
 export default Header;
-

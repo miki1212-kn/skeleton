@@ -12,6 +12,7 @@ import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
 import AddEventButton from "../components/AddEventButton";
 import SelectedDateModal from "../components/SelectedDateModal";
 import GetFreeTime from "../components/freeTime";
+import Header from "../components/header";
 
 //?
 import { type } from "os";
@@ -292,6 +293,7 @@ const MainCalender: React.FC = () => {
   ];
   return (
     <>
+      <Header></Header>
       <div className={styles.calenderContainer}>
         <div className={styles.weekdays}>
           {["日", "月", "火", "水", "木", "金", "土"].map((day) => {
