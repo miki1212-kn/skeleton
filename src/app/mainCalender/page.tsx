@@ -3,7 +3,7 @@
 import Header from "../components/header";
 
 
-export default function MaincCalender() {
+export default function MainCalender() {
   return (
     <div>
       <Header />
