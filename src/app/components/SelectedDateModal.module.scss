@@ -1,0 +1,99 @@
+@import "../styles/color.scss";
+
+.modal {
+  background-color: $base;
+  padding: 0;
+  width: 100vw;
+  height: 90vh;
+  button,
+  input,
+  label,
+  select,
+  textarea {
+    all: unset;
+  }
+  button {
+    font-weight: bold !important;
+  }
+  .modalContent {
+    width: 100%;
+    height: 100%;
+    header {
+      background-color: $main;
+      color: $base;
+      padding: 4px 16px;
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        font-size: 1.1em;
+      }
+    }
+    main {
+      .eventLabel {
+        width: 100%;
+        padding: 16px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        .colorLabel {
+          width: 6px;
+          height: 30px;
+          background-color: $category_work;
+          border-radius: 2px;
+        }
+        .timeContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-size: 1.1em;
+          .timeBorder {
+            background-color: $font_color;
+            height: 3px;
+            width: 1px;
+          }
+          p {
+            font-weight: bold;
+          }
+        }
+        h3 {
+          font-size: 1.6em;
+        }
+      }
+      .notEvent {
+        font-weight: bold;
+        margin: 20px;
+        font-size: 1.4em;
+      }
+    }
+  }
+
+  // main {
+  //   padding: 26px 19px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 36px;
+  //   .ttlContainer {
+  //     display: grid;
+  //     grid-template-columns: 1fr 16px 50px;
+  //     .ttlWrap {
+  //       font-size: 2em;
+  //     }
+  //     .regularBtn {
+  //       font-size: 1.4em;
+  //       color: $sub;
+  //       // background-color: ;
+  //       border: 0.5px solid $sub;
+  //       border-radius: 4px;
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+
+  //       // padding: 4px 12px;
+  //     }
+  //   }
+  //   .ttlWrap {
+  //     all: unset;
+  //   }
+  // }
+}

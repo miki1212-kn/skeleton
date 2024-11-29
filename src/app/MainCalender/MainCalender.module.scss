@@ -1,0 +1,85 @@
+@import "../styles/color.scss";
+
+.calenderContainer {
+  margin: 0px 0 0 0;
+  width: 100vw;
+  height: 626px;
+
+  .weekdays {
+    font-size: 1em;
+    font-weight: bold;
+    padding: 12px 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    .weekday {
+      display: flex;
+      justify-content: center;
+    }
+    .sunday {
+      color: $sunday_color;
+    }
+    .saturday {
+      color: $saturday_color;
+    }
+  }
+
+  .dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    .date {
+      height: 125px;
+      border: 0.35px #edeaf5 solid;
+      box-shadow: 0 0 2px rgba(122, 119, 128, 0.25);
+
+      .dateTopContainer {
+        width: 100%;
+        height: 22px;
+        margin-bottom: 3px;
+
+        .dateNum {
+          padding: 2px 3px 2px 2px;
+          width: 22px;
+          height: 100%;
+          font-size: 1.2em;
+        }
+      }
+      .dateMainContainer {
+        padding: 0 2px 2px 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        .eventContainer {
+          width: 49px;
+          height: 14px;
+          padding-left: 2px;
+          font-weight: bold;
+          background: $bg_event;
+          border-radius: 2px;
+          border: 0.5px solid $sub;
+          color: $sub;
+
+          overflow: hidden;
+        }
+      }
+      &.selected {
+        border: 1px solid $accent;
+      }
+    }
+
+    .saturday {
+      color: $saturday_color;
+    }
+    .sunday {
+      color: $sunday_color;
+    }
+    .isToday {
+      background-color: $accent;
+      color: $base;
+    }
+
+    .dateOut {
+      background-color: #f6f6f9;
+    }
+  }
+}
